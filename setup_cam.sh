@@ -42,10 +42,8 @@ sudo pip3 list
 cat /etc/modules
 echo 'bcm2835-v4l2' | sudo tee -a /etc/modules
 cat /etc/modules
+cd
 
-
-cd ~/surveillance-app/
-#vi .env 
 #up_cam.sh
 #python3 main.py 
 

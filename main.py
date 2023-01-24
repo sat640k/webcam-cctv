@@ -33,8 +33,7 @@
 # HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-#
-# Origin: https://aws.amazon.com/jp/builders-flash/202010/raspi-security-camera/?awsf.filter-name=*all
+
 
 import datetime
 import os
@@ -64,7 +63,6 @@ sns = boto3.client("sns")
 detector = dlib.get_frontal_face_detector()
 
 
-# 顔検出するまで待つ
 def detect_face():
     """ Wait until faces detected using dlib """
     camera = cv2.VideoCapture(0)
@@ -78,9 +76,9 @@ def detect_face():
     return
 
 
-# 動体を検出するまで待つ
 def detect_motion():
-    """ Wait until faces detected using dlib """
+    """ Wait until motion detected using dlib """
+    """ 動体を検出するまで待つ """
     th = 10
     gray1 = None
     gray2 = None
@@ -129,9 +127,9 @@ def detect_motion():
     return
 
 
-# 撮影動画をアップロード
 def upload_video():
     """ Upload video using Amazon Kinesis Video Streams Producer SDK C++ """
+    """ 撮影動画をアップロード """
     start = time.time()
     kvs_app = f"{KVS_PRODUCER_BUILD_PATH}/{APP_NAME}"
     try:
@@ -148,9 +146,9 @@ def upload_video():
     return None, None
 
 
-# 撮影動画のURLを取得
 def get_session_url(start, end):
     """ Get HLS streaming session URL """
+    """ 撮影動画のURLを取得 """
     endpoint = kvs.get_data_endpoint(
         APIName="GET_HLS_STREAMING_SESSION_URL",
         StreamName=KVS_STREAM_NAME
@@ -175,9 +173,9 @@ def get_session_url(start, end):
     return url
 
 
-# 撮影を通知
 def notify_url(url, timestamp):
     """ Notify HLS streaming session URL via Amazon SNS """
+    """ 撮影を通知 """
     date = datetime.datetime.fromtimestamp(timestamp)
     subject = "通知: 撮影対象を検出しました"
     message = f"""セキュリティカメラで撮影対象を検出しました。
